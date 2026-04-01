@@ -2,26 +2,35 @@ import { PasswordChecker } from "../04_PasswordChecker";
 
 let checker: PasswordChecker;
 
+// запускается перед каждым тестом
 beforeEach(() => {
     checker = new PasswordChecker();
 });
 
-test("short password is weak", () => {
+test('short password', () => {
     expect(checker.check("123")).toBe("weak");
 });
 
-test("simple 6-letter password is medium", () => {
+test('only lowercase letters', () => {
     expect(checker.check("abcdef")).toBe("medium");
 });
 
-test("password with letters and number but not strong enough is medium", () => {
+test('letters + numbers but short', () => {
     expect(checker.check("abc123")).toBe("medium");
 });
 
-test("strong password", () => {
+test('strong password', () => {
     expect(checker.check("Abcd1234")).toBe("strong");
 });
 
-test("strong password needs uppercase lowercase and digit", () => {
+test('no lowercase', () => {
     expect(checker.check("PASSWORD1")).toBe("medium");
+});
+
+test('no uppercase', () => {
+    expect(checker.check("password1")).toBe("medium");
+});
+
+test('no digit', () => {
+    expect(checker.check("Password")).toBe("medium");
 });

@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PasswordChecker = void 0;
 var PasswordChecker = /** @class */ (function () {
     function PasswordChecker() {
     }
@@ -15,3 +18,4 @@ var PasswordChecker = /** @class */ (function () {
     };
     return PasswordChecker;
 }());
+exports.PasswordChecker = PasswordChecker;

@@ -74,3 +74,6 @@ console.log(s1.getCurrent(5));
 s1.setOn(false);
 //current =5/1000000000= 5e-9
 console.log(s1.getCurrent(5));
+
+s1.setOn(false);
+printResistance(s1);
