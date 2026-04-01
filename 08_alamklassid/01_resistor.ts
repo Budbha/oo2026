@@ -97,6 +97,28 @@ class SeriesConnection extends MultpleConnection{
         }
 
         return totalResistance;
+
     }
 }
+
+class ParallelConnection extends MultpleConnection{
+    getResistance(): number {
+        let inverseSum: number=0; 
+
+        for(let resistor of this.resistors){
+            inverseSum+=1/resistor.getResistance();
+        }
+        return 1/inverseSum
+    }
+}
+
+let p:ParallelConnection=new ParallelConnection();
+p.addResistor(new Resistor(220))
+p.addResistor(new Resistor(220))
+console.log("Resistance of parallel connection" +p.getResistance())
+
 let s:SeriesConnection= new SeriesConnection();
+s.addResistor(new Resistor(220));
+s.addResistor(new Resistor(220));
+console.log("Resistance of series connection" +s.getResistance() +"ohms")
+

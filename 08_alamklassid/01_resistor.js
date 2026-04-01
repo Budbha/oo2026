@@ -80,3 +80,38 @@ console.log(s1.getCurrent(5));
 s1.setOn(false);
 //current =5/1000000000= 5e-9
 console.log(s1.getCurrent(5));
+s1.setOn(false);
+//printResistance(s1);
+var MultpleConnection = /** @class */ (function (_super) {
+    __extends(MultpleConnection, _super);
+    function MultpleConnection() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.resistors = [];
+        return _this;
+    }
+    MultpleConnection.prototype.addResistor = function (r) {
+        this.resistors.push(r);
+    };
+    return MultpleConnection;
+}(AbstractResistor));
+//This class should finally return total value of the resitars in the connection
+var SeriesConnection = /** @class */ (function (_super) {
+    __extends(SeriesConnection, _super);
+    function SeriesConnection() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SeriesConnection.prototype.getResistance = function () {
+        var totalResistance = 0;
+        for (var _i = 0, _a = this.resistors; _i < _a.length; _i++) {
+            var resistor = _a[_i];
+            //get the resitance value of each resistor and add to the total
+            totalResistance += resistor.getResistance();
+        }
+        return totalResistance;
+    };
+    return SeriesConnection;
+}(MultpleConnection));
+var s = new SeriesConnection();
+s.addResistor(new Resistor(220));
+s.addResistor(new Resistor(220));
+console.log("Resistance of series connection" + s.getResistance() + "ohms");
