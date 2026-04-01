@@ -76,4 +76,27 @@ s1.setOn(false);
 console.log(s1.getCurrent(5));
 
 s1.setOn(false);
-printResistance(s1);
+//printResistance(s1);
+
+abstract class MultpleConnection extends AbstractResistor{
+    resistors: AbstractResistor[]=[]
+
+    addResistor(r:AbstractResistor){
+        this.resistors.push(r);
+    }
+}
+//This class should finally return total value of the resitars in the connection
+class SeriesConnection extends MultpleConnection{
+    getResistance(): number {
+        let totalResistance:number=0;
+
+        for(let resistor of this.resistors){
+            //get the resitance value of each resistor and add to the total
+            totalResistance += resistor.getResistance()
+            
+        }
+
+        return totalResistance;
+    }
+}
+let s:SeriesConnection= new SeriesConnection();
