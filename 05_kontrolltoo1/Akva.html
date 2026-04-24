@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;     
+        justify-content: center;  
+        height: 100vh;
+        margin: 0;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <title>Aquarium</title>
+    <script src="Akva.js"></script>
+
+    <script>
+        let aquarium;
+
+        function startPage() {
+            let canvas = document.getElementById("canvas1");
+            let ctx = canvas.getContext("2d");
+
+            aquarium = new Aquarium(100, 10, 10, ctx);
+            updatePage("Aquarium created.");
+        }
+
+        function addWater() {
+            let amount = document.getElementById("amount").valueAsNumber;
+
+            if (isNaN(amount) || amount <= 0) {
+                updatePage("Enter positive number.");
+                return;
+            }
+
+            let message = aquarium.addWater(amount);
+            updatePage(message);
+        }
+
+        function removeWater() {
+            let amount = document.getElementById("amount").valueAsNumber;
+
+            if (isNaN(amount) || amount <= 0) {
+                updatePage("Enter positive number.");
+                return;
+            }
+
+            let message = aquarium.removeWater(amount);
+            updatePage(message);
+        }
+
+        function updatePage(message) {
+            document.getElementById("volume").innerText =
+                "Aquarium volume: " + aquarium.getVolume() + " ml";
+
+            document.getElementById("water").innerText =
+                "Water amount: " + aquarium.getWater() + " ml";
+
+            document.getElementById("message").innerText = message;
+        }
+    </script>
+</head>
+
+<body onload="startPage()">
+
+    <h1>Aquarium</h1>
+
+    <canvas id="canvas1" width="400" height="350"></canvas>
+
+    <p id="volume"></p>
+    <p id="water"></p>
+
+    <input type="number" id="amount" placeholder="Water amount ml">
+
+    <button onclick="addWater()">Add water</button>
+    <button onclick="removeWater()">Remove water</button>
+
+    <p id="message"></p>
+
+</body>
+</html>
