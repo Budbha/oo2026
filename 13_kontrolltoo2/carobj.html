@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Moving Cars</title>
+    <script src="carobj.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .block {
+            width: 650px;
+            margin: 15px auto;
+            padding: 15px;
+            border: 1px solid gray;
+            border-radius: 8px;
+        }
+
+        canvas {
+            border: 1px solid gray;
+        }
+
+        input, button {
+            margin: 5px;
+            padding: 6px 10px;
+        }
+
+        #drivingLogBlock {
+            display: none;
+        }
+    </style>
+</head>
+
+<body onload="startPage()">
+
+<h1>Moving Cars</h1>
+
+<div class="block">
+    <h2>Create car</h2>
+
+    <input type="number" id="length" placeholder="Length m">
+    <input type="number" id="weight" placeholder="Weight t">
+    <input type="text" id="make" placeholder="Make">
+
+    <br>
+
+    <button onclick="createCar()">Create car</button>
+</div>
+
+<div class="block">
+    <h2>Move car</h2>
+
+    <canvas id="canvas1" width="600" height="250"></canvas>
+
+    <p id="carInfo">No car created.</p>
+
+    <label>Speed:</label>
+    <input type="range" id="speed" min="-10" max="10" value="0"
+           oninput="setSpeedFromRange(this)">
+    <span id="speedValue">0</span>
+
+    <br>
+
+    <button onclick="moveCar()">Move</button>
+    <button onclick="automatic()">Automatic / Stop</button>
+</div>
+
+<div class="block" id="drivingLogBlock">
+    <h2>Truck driving log</h2>
+
+    <button onclick="addDrivingLogRecord()">Add driving log record</button>
+
+    <p id="drivingLog"></p>
+</div>
+
+</body>
+</html>
