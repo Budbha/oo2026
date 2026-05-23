@@ -14,16 +14,12 @@ class Air implements GasMixture {
     }
 
     getInfo(): string {
-        return `Gas: ${this.getName()}, Oxygen: ${this.getOxygenPercent()}%`;
+        return "Gas: " + this.getName() + ", Oxygen: " + this.getOxygenPercent() + "%";
     }
 }
 
 class Nitrox implements GasMixture {
-    oxygenPercent: number;
-
-    constructor(oxygenPercent: number) {
-        this.oxygenPercent = oxygenPercent;
-    }
+    constructor(private oxygenPercent: number) {}
 
     getName(): string {
         return "Nitrox";
@@ -34,17 +30,23 @@ class Nitrox implements GasMixture {
     }
 
     getInfo(): string {
-        return `Gas: ${this.getName()}, Oxygen: ${this.getOxygenPercent()}%`;
+        return "Gas: " + this.getName() + ", Oxygen: " + this.getOxygenPercent() + "%";
     }
 }
 
+let gas: GasMixture;
 
-// Näitprogramm
+function chooseAir(): void {
+    gas = new Air();
+    showGas();
+}
 
-const gas1: GasMixture = new Air();
-const gas2: GasMixture = new Nitrox(32);
-const gas3: GasMixture = new Nitrox(36);
+function chooseNitrox(): void {
+    const oxygen = (document.getElementById("oxygen") as HTMLInputElement).valueAsNumber;
+    gas = new Nitrox(oxygen);
+    showGas();
+}
 
-console.log(gas1.getInfo());
-console.log(gas2.getInfo());
-console.log(gas3.getInfo());
+function showGas(): void {
+    document.getElementById("result")!.innerText = gas.getInfo();
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Heating Demo</title>
+
+    <script src="02_Temerature.js"></script>
+    <script>
+        let waterPot =null;
+        let ironRadiator=null;
+        let airInRoom = null;
+
+        function startPage(){
+            document.getElementById("output").innerText="Enter values and click create objects"
+        }
+    </script>
+
+
+</head>
+<body onload="startPage()">
+
+    <h1>Material Heating Demo</h1>
+    <h2>Water</h2>
+    <label>Mass (kg): </label>
+    <input type="number" id="waterMass" value=""><br><br>
+    <label>Temerature (°C): </label>
+    <input type="number" id="ironTemp" value=""><br><br>
+    <h2 id="output"></h2>
+    
+</body>
+</html>

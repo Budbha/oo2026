@@ -37,7 +37,7 @@ class DeepDiver extends Diver {
     }
 
     getType(): string {
-        return "Deep diver";
+        return "DeepDiver";
     }
 }
 
@@ -53,35 +53,44 @@ class Instructor extends Diver {
 
 let divers: Diver[] = [];
 
-function createDiver(): void {
-    const name = (document.getElementById("name") as HTMLInputElement).value;
-    const depth = (document.getElementById("depth") as HTMLInputElement).valueAsNumber;
-    const air = (document.getElementById("air") as HTMLInputElement).valueAsNumber;
-    const type = (document.getElementById("type") as HTMLSelectElement).value;
-
-    let diver: Diver;
-
-    if (type === "deep") {
-        diver = new DeepDiver(name, depth, air);
-    }
-    else if (type === "instructor") {
-        diver = new Instructor(name, depth, air);
-    }
-    else {
-        diver = new Diver(name, depth, air);
-    }
-
-    divers.push(diver);
-
-    updatePage();
+function getName(): string {
+    return (document.getElementById("name") as HTMLInputElement).value;
 }
 
-function updatePage(): void {
+function getDepth(): number {
+    return Number((document.getElementById("depth") as HTMLInputElement).value);
+}
+
+function getAir(): number {
+    return Number((document.getElementById("air") as HTMLInputElement).value);
+}
+
+function addDiverToList(diver: Diver): void {
+    divers.push(diver);
+    showList();
+}
+
+function showList(): void {
     let text = "";
 
-    for (const diver of divers) {
-        text += diver.getInfo() + "<br>";
+    for (let i = 0; i < divers.length; i++) {
+        text += (i + 1) + ". " + divers[i].getInfo() + "<br>";
     }
 
     document.getElementById("result")!.innerHTML = text;
+}
+
+function chooseDiver(): void {
+    let diver = new Diver(getName(), getDepth(), getAir());
+    addDiverToList(diver);
+}
+
+function chooseDeepDiver(): void {
+    let diver = new DeepDiver(getName(), getDepth(), getAir());
+    addDiverToList(diver);
+}
+
+function chooseInstructor(): void {
+    let diver = new Instructor(getName(), getDepth(), getAir());
+    addDiverToList(diver);
 }
