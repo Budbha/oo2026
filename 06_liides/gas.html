@@ -1,0 +1,63 @@
+interface GasMixture {
+    getName(): string;
+    getOxygenPercent(): number;
+    getInfo(): string;
+}
+
+class Air implements GasMixture {
+    getName(): string {
+        return "Air";
+    }
+
+    getOxygenPercent(): number {
+        return 21;
+    }
+
+    getInfo(): string {
+        return "Gas: " + this.getName() + ", Oxygen: " + this.getOxygenPercent() + "%";
+    }
+}
+
+class Nitrox implements GasMixture {
+    constructor(private oxygenPercent: number) {}
+
+    getName(): string {
+        return "Nitrox";
+    }
+
+    getOxygenPercent(): number {
+        return this.oxygenPercent;
+    }
+
+    getInfo(): string {
+        return "Gas: " + this.getName() + ", Oxygen: " + this.getOxygenPercent() + "%";
+    }
+}
+
+let gases: GasMixture[] = [];
+
+function createGas(): void {
+    const gasType = (document.getElementById("gasType") as HTMLSelectElement).value;
+    const oxygen = (document.getElementById("oxygen") as HTMLInputElement).valueAsNumber;
+
+    let gas: GasMixture;
+
+    if (gasType === "air") {
+        gas = new Air();
+    } else {
+        gas = new Nitrox(oxygen);
+    }
+
+    gases.push(gas);
+    updatePage();
+}
+
+function updatePage(): void {
+    let text = "";
+
+    for (let i = 0; i < gases.length; i++) {
+        text += (i + 1) + ". " + gases[i].getInfo() + "<br>";
+    }
+
+    document.getElementById("result")!.innerHTML = text;
+}

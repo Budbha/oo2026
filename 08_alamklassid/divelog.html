@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Divers</title>
+    <script src="diver.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .block {
+            width: 450px;
+            margin: 30px auto;
+            padding: 20px;
+            border: 1px solid gray;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            margin: 5px;
+            padding: 6px 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Divers</h1>
+
+<div class="block">
+
+    <input type="text" id="name" placeholder="Name">
+
+    <br>
+
+    <input type="number" id="depth" placeholder="Depth">
+
+    <input type="number" id="air" placeholder="Air">
+
+    <br>
+
+    <select id="type">
+        <option value="normal">Diver</option>
+        <option value="deep">Deep diver</option>
+        <option value="instructor">Instructor</option>
+    </select>
+
+    <br>
+
+    <button onclick="createDiver()">Create diver</button>
+
+    <h2>Result</h2>
+
+    <p id="result"></p>
+
+</div>
+
+</body>
+</html>
