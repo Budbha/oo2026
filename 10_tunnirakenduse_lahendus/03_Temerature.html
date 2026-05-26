@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Heating Demo</title>
+
+    <script src="03_Temerature.js"></script>
+
+    <script>
+        let waterPot = null;
+        let ironRadiator = null;
+        let airInRoom = null;
+
+        function startPage(){
+            document.getElementById("output").innerText = "Enter values and click Create objects";
+        }
+
+        function round2(value){
+            return Math.round(value * 100) / 100;
+        }
+
+        // ===== Our added HTML/JS part starts here =====
+
+        // This function reads values from the input fields
+        // and creates three objects: water, iron radiator and air in room.
+        function createObjects(){
+            const waterMass = document.getElementById("waterMass").valueAsNumber;
+            const waterTemp = document.getElementById("waterTemp").valueAsNumber;
+
+            const ironMass = document.getElementById("ironMass").valueAsNumber;
+            const ironTemp = document.getElementById("ironTemp").valueAsNumber;
+
+            const roomLength = document.getElementById("roomLength").valueAsNumber;
+            const roomWidth = document.getElementById("roomWidth").valueAsNumber;
+            const roomHeight = document.getElementById("roomHeight").valueAsNumber;
+            const airTemp = document.getElementById("airTemp").valueAsNumber;
+
+            if (
+                isNaN(waterMass) ||
+                isNaN(waterTemp) ||
+                isNaN(ironMass) ||
+                isNaN(ironTemp) ||
+                isNaN(roomLength) ||
+                isNaN(roomWidth) ||
+                isNaN(roomHeight) ||
+                isNaN(airTemp)
+            ) {
+                document.getElementById("output").innerText = "Please fill all fields";
+                return;
+            }
+
+            if (
+                waterMass <= 0 ||
+                ironMass <= 0 ||
+                roomLength <= 0 ||
+                roomWidth <= 0 ||
+                roomHeight <= 0
+            ) {
+                document.getElementById("output").innerText = "Mass and room sizes must be positive";
+                return;
+            }
+
+            // Water is created using the base MaterialAmount class.
+            // Specific heat capacity of water is about 4200 J/(kg·K).
+            waterPot = new MaterialAmount(waterMass, 4200, waterTemp);
+
+            // Iron radiator is created using our added IronAmount class.
+            ironRadiator = new IronAmount(ironMass, ironTemp);
+
+            // Air is created using the existing AirAmount class.
+            // Its mass is calculated from room length, width and height.
+            airInRoom = new AirAmount(roomLength, roomWidth, roomHeight, airTemp);
+
+            showCurrentTemperatures();
+        }
+
+        // This function shows current temperatures of all created objects.
+        function showCurrentTemperatures(){
+            if (!waterPot || !ironRadiator || !airInRoom){
+                document.getElementById("output").innerText = "Create objects first";
+                return;
+            }
+
+            document.getElementById("output").innerHTML =
+                "Objects created<br>" +
+                "Water temperature: " + round2(waterPot.getTemperature()) + " °C<br>" +
+                "Iron temperature: " + round2(ironRadiator.getTemperature()) + " °C<br>" +
+                "Air temperature: " + round2(airInRoom.getTemperature()) + " °C";
+        }
+
+        // This function adds energy to water.
+        // It uses the changeEnergy() method from MaterialAmount.
+        function addEnergyToWater(){
+            if (!waterPot){
+                document.getElementById("output").innerText = "Create objects first";
+                return;
+            }
+
+            const joules = document.getElementById("joules").valueAsNumber;
+
+            if (isNaN(joules)){
+                document.getElementById("output").innerText = "Please enter energy in joules";
+                return;
+            }
+
+            waterPot.changeEnergy(joules);
+
+            document.getElementById("output").innerHTML =
+                "Energy added to water<br>" +
+                "New water temperature: " + round2(waterPot.getTemperature()) + " °C";
+        }
+
+        // This function calculates the final equal temperature.
+        // It uses water, iron and air objects together.
+        function calculateEqualTemperature(){
+            if (!waterPot || !ironRadiator || !airInRoom){
+                document.getElementById("output").innerText = "Create objects first";
+                return;
+            }
+
+            const finalTemperature = getEqualTemperature([
+                waterPot,
+                ironRadiator,
+                airInRoom
+            ]);
+
+            document.getElementById("output").innerHTML =
+                "Final equal temperature: " + round2(finalTemperature) + " °C";
+        }
+
+        // ===== Our added HTML/JS part ends here =====
+    </script>
+</head>
+
+<body onload="startPage()">
+
+    <h1>Material Heating Demo</h1>
+
+    <h2>Water</h2>
+
+    <label>Mass (kg): </label>
+    <input type="number" id="waterMass"><br><br>
+
+    <label>Temperature (°C): </label>
+    <input type="number" id="waterTemp"><br><br>
+
+
+    <h2>Iron radiator</h2>
+
+    <label>Mass (kg): </label>
+    <input type="number" id="ironMass"><br><br>
+
+    <label>Temperature (°C): </label>
+    <input type="number" id="ironTemp"><br><br>
+
+
+    <h2>Room air</h2>
+
+    <label>Room length (m): </label>
+    <input type="number" id="roomLength"><br><br>
+
+    <label>Room width (m): </label>
+    <input type="number" id="roomWidth"><br><br>
+
+    <label>Room height (m): </label>
+    <input type="number" id="roomHeight"><br><br>
+
+    <label>Air temperature (°C): </label>
+    <input type="number" id="airTemp"><br><br>
+
+
+    <button onclick="createObjects()">Create objects</button>
+    <button onclick="showCurrentTemperatures()">Show current temperatures</button>
+
+    <hr>
+
+    <!-- Our added HTML part starts here -->
+
+    <h2>Add energy to water</h2>
+
+    <label>Energy (joules): </label>
+    <input type="number" id="joules"><br><br>
+
+    <button onclick="addEnergyToWater()">Add energy to water</button>
+
+    <hr>
+
+    <h2>Equal temperature</h2>
+
+    <button onclick="calculateEqualTemperature()">Calculate equal temperature</button>
+
+    <!-- Our added HTML part ends here -->
+
+    <h2 id="output"></h2>
+
+</body>
+</html>

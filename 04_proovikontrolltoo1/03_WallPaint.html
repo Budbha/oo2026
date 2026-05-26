@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wall Paint Calculator</title>
+
+    <script src="03_WallPaint.js" defer></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f3ef;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #3b2f2f;
+        }
+
+        h2 {
+            color: #5a3e2b;
+        }
+
+        .box {
+            background-color: white;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #d8c7b8;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 250px;
+            padding: 7px;
+            margin-top: 4px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        canvas {
+            background-color: white;
+            border: 1px solid #d8c7b8;
+        }
+
+        #message {
+            font-weight: bold;
+            color: #5a3e2b;
+        }
+    </style>
+</head>
+
+<body onload="startPage()">
+    <h1>Wall Paint Calculator</h1>
+
+    <div class="box">
+        <h2>Enter wall data</h2>
+
+        <label for="wallWidth">Wall width in meters:</label>
+        <input id="wallWidth" type="number" placeholder="For example: 4">
+
+        <label for="wallHeight">Wall height in meters:</label>
+        <input id="wallHeight" type="number" placeholder="For example: 2.5">
+
+        <label for="windowWidth">Window width in meters:</label>
+        <input id="windowWidth" type="number" placeholder="For example: 1.2">
+
+        <label for="windowHeight">Window height in meters:</label>
+        <input id="windowHeight" type="number" placeholder="For example: 1.4">
+
+        <label for="paintCoverage">Paint coverage, m² per liter:</label>
+        <input id="paintCoverage" type="number" placeholder="For example: 8">
+
+        <br>
+
+        <button onclick="calculatePaint()">Calculate</button>
+
+        <p id="message"></p>
+    </div>
+
+    <div class="box">
+        <h2>Result</h2>
+        <div id="result"></div>
+    </div>
+
+    <div class="box">
+        <h2>Wall view</h2>
+        <canvas id="wallCanvas" width="500" height="350"></canvas>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <title>Sukeldumislogi</title>
+</head>
+<body>
+    <h1>Sukeldumislogi</h1>
+
+    <label for="nimi">Sukeldumise nimi:</label>
+    <input type="text" id="nimi">
+
+    <br><br>
+
+    <label for="sugavus">Sügavus meetrites:</label>
+    <input type="number" id="sugavus">
+
+    <br><br>
+
+    <label for="kestus">Kestus minutites:</label>
+    <input type="number" id="kestus">
+
+    <br><br>
+
+    <button onclick="lisaSukeldumineLehele()">Lisa sukeldumine</button>
+    <button onclick="puhastaLogi()">Puhasta logi</button>
+
+    <h2>Tulemus</h2>
+    <p id="info"></p>
+    <pre id="output"></pre>
+
+    <script>
+        var exports = {};
+    </script>
+    <script src="./04_SukeldumisLogi.js"></script>
+</body>
+</html>

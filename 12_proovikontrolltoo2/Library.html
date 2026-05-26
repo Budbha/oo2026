@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library system</title>
+
+    <script>
+        let library = null;
+
+        // This is needed because TypeScript export creates exports in JavaScript
+        var exports = {};
+
+        function startPage(){
+            library = new Library();
+            updateForm();
+            showItems();
+        }
+
+        function updateForm(){
+            const type = document.getElementById("type").value;
+
+            document.getElementById("book-fields").style.display = type === "book" ? "" : "none";
+            document.getElementById("dvd-fields").style.display = type === "dvd" ? "" : "none";
+        }
+
+        function addItem(){
+            const type = document.getElementById("type").value;
+            let item;
+
+            try{
+                if (type === "book"){
+                    item = new Book(
+                        document.getElementById("id").value,
+                        document.getElementById("title").value,
+                        document.getElementById("author").value,
+                        Number(document.getElementById("year").value),
+                        Number(document.getElementById("pages").value),
+                        document.getElementById("ISBN").value
+                    );
+                } else {
+                    item = new DVD(
+                        document.getElementById("id").value,
+                        document.getElementById("title").value,
+                        document.getElementById("author").value,
+                        Number(document.getElementById("year").value),
+                        Number(document.getElementById("duration").value)
+                    );
+                }
+
+                library.addItem(item);
+                showItems();
+
+            } catch (e){
+                alert("Error adding item: " + e.message);
+            }
+        }
+
+        // ===== Our added part starts here =====
+
+        // This helper function shows any given list of items.
+        // We added it because search also needs to display only some items.
+        function showItemList(items){
+            const out = document.getElementById("output");
+            out.innerHTML = "";
+
+            if (items.length === 0){
+                out.innerText = "(no items found)";
+                return;
+            }
+
+            items.forEach(item => {
+                const div = document.createElement("div");
+                div.textContent = item.getSummary();
+                out.appendChild(div);
+            });
+        }
+
+        // This function shows all items from the library.
+        function showItems(){
+            showItemList(library.getAll());
+        }
+
+        // This function searches items by ID, title or author.
+        // It uses the searchItems method from the Library class.
+        function searchItems(){
+            const text = document.getElementById("searchText").value;
+            const results = library.searchItems(text);
+
+            showItemList(results);
+        }
+
+        // This function clears the search field and shows all items again.
+        function clearSearch(){
+            document.getElementById("searchText").value = "";
+            showItems();
+        }
+
+        // This function deletes one item by ID.
+        // If item is found, it is removed from the library.
+        function deleteItem(){
+            const id = document.getElementById("deleteId").value;
+
+            if (id.trim() === ""){
+                alert("Please enter ID to delete");
+                return;
+            }
+
+            const deleted = library.deleteById(id);
+
+            if (deleted){
+                alert("Item deleted");
+                document.getElementById("deleteId").value = "";
+                showItems();
+            } else {
+                alert("No item found with this ID");
+            }
+        }
+
+        // ===== Our added part ends here =====
+
+        function loadFile(){
+            const file = document.getElementById("fileInput").files[0];
+
+            // If no file selected → stop
+            if (!file) return;
+
+            // FileReader reads file content
+            const reader = new FileReader();
+
+            // After file is read
+            reader.onload = function(e) {
+                // Convert text → objects
+                library.loadFromText(e.target.result);
+
+                // Update display
+                showItems();
+            };
+
+            // Start reading file as text
+            reader.readAsText(file);
+        }
+
+        function download(){
+            // Convert objects → text format
+            const blob = new Blob([library.toText()]);
+
+            // Create temporary URL for file
+            const url = URL.createObjectURL(blob);
+
+            // Create temporary link element
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "library.txt";
+
+            // Trigger download
+            a.click();
+        }
+
+        // Expose functions to HTML buttons
+        window.startPage = startPage;
+        window.addItem = addItem;
+        window.showItems = showItems;
+        window.loadFile = loadFile;
+        window.download = download;
+        window.updateForm = updateForm;
+
+        // Our added functions
+        window.searchItems = searchItems;
+        window.clearSearch = clearSearch;
+        window.deleteItem = deleteItem;
+    </script>
+
+    <script src="Library.js"></script>
+</head>
+
+<body onload="startPage()">
+    <h1>Library system</h1>
+
+    <hr>
+
+    <h3>Upload files</h3>
+    <input type="file" id="fileInput">
+    <button onclick="loadFile()">Load</button>
+
+    <hr>
+
+    <h3>Add Item</h3>
+
+    <label>Type:</label>
+    <select id="type" onchange="updateForm()">
+        <option value="book">Book</option>
+        <option value="dvd">DVD</option>
+    </select>
+
+    <br><br>
+
+    <input id="id" placeholder="ID">
+    <input id="title" placeholder="Title">
+    <input id="author" placeholder="Author">
+    <input id="year" placeholder="Year">
+
+    <!-- Book fields -->
+    <span id="book-fields">
+        <input id="pages" type="number" placeholder="Pages">
+        <input id="ISBN" placeholder="ISBN">
+    </span>
+
+    <!-- DVD fields -->
+    <span id="dvd-fields" style="display: none">
+        <input id="duration" type="number" placeholder="Duration">
+    </span>
+
+    <br><br>
+
+    <button onclick="addItem()">Add Item</button>
+
+    <!-- Our added HTML part starts here -->
+
+    <hr>
+
+    <h3>Search item</h3>
+    <input id="searchText" placeholder="Search by ID, title or author">
+    <button onclick="searchItems()">Search</button>
+    <button onclick="clearSearch()">Clear search</button>
+
+    <hr>
+
+    <h3>Delete item</h3>
+    <input id="deleteId" placeholder="ID to delete">
+    <button onclick="deleteItem()">Delete</button>
+
+    <!-- Our added HTML part ends here -->
+
+    <hr>
+
+    <h3>Items</h3>
+    <button onclick="showItems()">Refresh</button>
+    <div id="output" style="font-family:monospace"></div>
+
+    <hr>
+
+    <h3>Download</h3>
+    <button onclick="download()">Download</button>
+
+</body>
+</html>
